@@ -27,6 +27,12 @@ body{
         background: #232;
         color:#fff;
     }
+    div.content div[slot="navbar"]{
+        background-color: red;
+    }
+    div.content div[slot="body"]{
+        background-color: blue;
+    }
 }
 
 body[dark]{

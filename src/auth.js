@@ -5,24 +5,22 @@ const appConfig = new AppConfig(['store_write', 'publish_data']);
 
 export const userSession = new UserSession({ appConfig });
 
-export function authenticate() {
+export function authenticate(f) {
   showConnect({
     appDetails: {
       name: 'SecretsApp',
-      icon: window.location.origin + '/logo.svg',
+      icon: window.location.origin,
     },
     redirectTo: '/',
-    finished: () => {
-      window.location.reload();
-    },
+    finished: typeof f === "function"?f:_=>{window.location.reload();},
     userSession: userSession,
   });
 }
 
-export function getUserData() {
-  return userSession.loadUserData();
-}
+export const getUserData = ()=>userSession.loadUserData();
 
-export function getPerson() {
-  return new Person(getUserData().profile);
-}
+export const getPerson = ()=>new Person(getUserData().profile);
+
+export const isLogin = ()=>userSession.isUserSignedIn();
+
+export const unlogin = ()=>userSession.signUserOut("/");
