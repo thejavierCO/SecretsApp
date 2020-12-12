@@ -10,9 +10,7 @@
         </div>
         <div slot="body">
             <Auth>
-                <div slot="login" let:user={data}>
-                    {data.username}
-                </div>
+                <div slot="login" let:user={data}>login</div>
                 <div slot="unlogin">not login</div>
             </Auth>
         </div>
