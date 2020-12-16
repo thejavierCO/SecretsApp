@@ -2,8 +2,6 @@ import {isLogin,userSession} from "./auth";
 import {Storage} from "@stacks/storage";
 import { v4 } from "uuid";
 
-let key = Symbol("save");
-
 export const storage = ()=>isLogin()?new ManagerStorage({userSession}):{};
 
 export class File{
@@ -24,7 +22,7 @@ export class File{
         .catch(e=>{throw {error:"not exist file",base:e}});
     }
     setContent(...data){
-        return this.storage.putFile(this.name,data.join("\n"));
+        return this.storage.putFile(this.name||v4(),data.join("\n"));
     }
     del(){
         this.getContent()

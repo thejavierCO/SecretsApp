@@ -6,17 +6,15 @@ export const userSession = new UserSession({ appConfig });
 
 export const nameApp = "SecretsApp"
 
-export function authenticate(f) {
-  showConnect({
+export const authenticate = f=>{showConnect({
     appDetails: {
-      name: nameApp,
-      icon: window.location.origin+"/logo.svg"
+        name: nameApp,
+        icon: "https://cldup.com/JBYtQaqOZX.svg"
     },
     redirectTo: '/',
     finished: typeof f === "function"?f:_=>window.location.reload(),
     userSession: userSession,
-  });
-}
+})}
 
 export const getUserData = ()=>userSession.loadUserData();
 
