@@ -1,29 +1,23 @@
 <script>
-    import Theme from "./components/theme.svelte";
-    import Main from "./components/service.svelte";
-    import Auth from "./components/auth.svelte";
+    export let config;
+    export let name;
+    export let text;
+    export let accion;
+    // import Theme from "./components/theme.svelte";
+    // import Main from "./components/service.svelte";
+    // import Auth from "./components/auth.svelte";
     import Content from "./components/content.svelte";
-    export let fileConfig = "testing";
+    // export let fileConfig = "testing";
+    console.log(config)
 </script>
 <main>
     <Content>
         <div slot="navbar">
-            <h3>welcome app</h3>
-            <Theme text="switch" {fileConfig}>
-                <Auth/>
-            </Theme>
+            <h3>{name}</h3>
+            <button on:click={accion}>{text}</button>
         </div>
         <div slot="body">
-            <Auth>
-                <div slot="login" let:user={data}>
-                    <Main {fileConfig}
-                    on:error={(a)=>console.warn(a)}
-                    on:OK={(a)=>{localStorage.setItem("config",a.detail)}}>
-                        <div slot="OK"></div>
-                    </Main>
-                </div>
-                <div slot="unlogin">not login</div>
-            </Auth>
+            <slot><em>body</em></slot>
         </div>
     </Content>
 </main>
