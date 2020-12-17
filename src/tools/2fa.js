@@ -1,4 +1,5 @@
 import twoFactor from "node-2fa";
+import {Auth} from "./app"
 
 export class TwoFactorAuthenticate{
     constructor(App,Auth){
@@ -15,6 +16,16 @@ export class TwoFactorAuthenticate{
             else if(delta===1)return {OK:"too early",status:delta}
         }else{
             throw {error:"not process"}
+        }
+    }
+}
+
+export class Auth2FaService extends Auth{
+    constructor(App){
+        super(App);
+        let {name} = App;
+        if(App.isLogin()){
+            console.log(this.getUserData,name)
         }
     }
 }

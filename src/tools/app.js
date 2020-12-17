@@ -51,7 +51,11 @@ export class Service {
     this.App = App;
   }
   useAppClass(ClassApp){
-    this.App = ClassApp;
+    if(ClassApp instanceof App){
+      this.App = ClassApp;
+    }else{
+      throw {error:"not is instance of App"}
+    }
   }
   setPermisions(...permicions){
     return this.permicions = permicions;
@@ -69,13 +73,24 @@ export class App{
     this.Appconfig = new AppConfig(Service.permicions);
     this.userSession = new UserSession(this.AppConfig);
     Service.apps.push(this);
-    this.Auth = Auth;
+    this._Auth = Auth;
   }
   useAuthClass(ClassAuth){
-    this.Auth = ClassAuth;
+    if(ClassAuth instanceof Auth){
+      this.Auth = ClassAuth;
+    }else{
+      throw {error:"not is instance of auth"}
+    }
   }
   get Auth(){
-    return new Auth(this);
+    return new this._Auth(this);
+  }
+  set Auth(ClassAuth){
+    if(ClassAuth instanceof Auth){
+      this._Auth = ClassAuth;
+    }else{
+      throw {error:"not is instance of auth"}
+    }
   }
 }
 
@@ -88,7 +103,11 @@ export class Auth{
     this.StorageUse = StorageApp;
   }
   useStorageClass(ClassStorage){
-    this.StorageUse = ClassStorage;
+    if(ClassStorage instanceof StorageApp){
+      this.StorageUse = ClassStorage;
+    }else{
+      throw {error:"not is instance of StorageApp"}
+    }
   }
   get getUserData(){
     return getUserData(this.App.userSession);
@@ -98,11 +117,5 @@ export class Auth{
   }
   get Storage(){
     return new this.StorageUse(this.App.userSession);
-  }
-}
-
-export class AuthService extends Auth{
-  constructor(App){
-    super(App);
   }
 }
