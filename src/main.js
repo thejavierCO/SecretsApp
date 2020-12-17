@@ -1,23 +1,36 @@
-import "./css/style.scss";
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vue from "vue";
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import {Service} from "./tools/app";
-import main from "./components/main.svelte"
-const config = new Service();
+import Main from "./main.vue";
+class MyPluggin{
+    install(Vue,options){
+        Vue.directive("await",{
+            bind:(...data)=>console.log(data),
+            inserted: function (...data) {console.log(data,this)},
+            // update:function (data) {console.log(data,this)},
+            // componentUpdated: function (...data) {console.log(data,this)},
+            // unbind: function (...data) {console.log(data,this)}
+        })
+        Vue.component('svelte-component',{
+            name:"svelteComponent",
+            render:h=>h("div",{ref:"content"}),
+            data:(a)=>{
+                let {component} = a.$attrs;
+                this.component = component;
+                this.base = a;
+                return {...a.$attrs}
+            },
+            // beforeMount:(a)=>{console.log("antes de montar",a,this)},
+            // beforeUpdate:(a)=>{console.log("antes de actualizar",a,this)},
+            // created:(a)=>{console.log("created",a,this)},
+            // mounted:(a)=>{console.log("i mounted",a,this)}
+        })
+    }
+    load(componet,tag){
+        console.log(componet,tag)
+    }
+}
+Vue.use(new MyPluggin(),{static:false});
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
-config.setPermisions('store_write', 'publish_data');
-
-const app = config.makeApp("SecretsApp","https://cldup.com/JBYtQaqOZX.svg");
-
-let run = new main({
-    target:document.querySelector("#app"),
-    props:{app}
+let test = new Vue({
+    el:"#app",
+    render:h=>h(Main)
 })
-
-run.$on("lognIn",()=>console.log("logiado"));
-run.$on("unlognIn",()=>console.log("exit auth"));
-run.$on("signIn",()=>console.log("registar"));
