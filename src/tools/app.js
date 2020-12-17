@@ -48,12 +48,16 @@ export class Service {
     this.apps = [];
     this.permicions = [];
     this.config = configApp();
+    this.App = App;
+  }
+  useAppClass(ClassApp){
+    this.App = ClassApp;
   }
   setPermisions(...permicions){
     return this.permicions = permicions;
   }
   makeApp(name,icon){
-    return new App(name,icon,this);
+    return new this.App(name,icon,this);
   }
 }
 
@@ -65,6 +69,10 @@ export class App{
     this.Appconfig = new AppConfig(Service.permicions);
     this.userSession = new UserSession(this.AppConfig);
     Service.apps.push(this);
+    this.Auth = Auth;
+  }
+  useAuthClass(ClassAuth){
+    this.Auth = ClassAuth;
   }
   get Auth(){
     return new Auth(this);
@@ -77,6 +85,10 @@ export class Auth{
     this.isLogin = ()=>isLogin(App.userSession);
     this.exitAuth = ()=>unLognin(App.userSession);
     this.App = App;
+    this.StorageUse = StorageApp;
+  }
+  useStorageClass(ClassStorage){
+    this.StorageUse = ClassStorage;
   }
   get getUserData(){
     return getUserData(this.App.userSession);
@@ -85,6 +97,12 @@ export class Auth{
     return getPerson(this.App.userSession);
   }
   get Storage(){
-    return new StorageApp(this.App.userSession);
+    return new this.StorageUse(this.App.userSession);
+  }
+}
+
+export class AuthService extends Auth{
+  constructor(App){
+    super(App);
   }
 }
