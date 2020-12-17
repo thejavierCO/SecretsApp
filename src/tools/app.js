@@ -1,5 +1,5 @@
 import { AppConfig, UserSession, showConnect } from '@stacks/connect'
-import { getUserData , getPerson , login , isLogin , unLognin } from "./auth";
+import { getUserData , getPerson , login , isLogin , unLognin , isPendingLogin} from "./auth";
 import { StorageApp } from "./storage";
 /**
  * config base
@@ -96,7 +96,10 @@ export class App{
 
 export class Auth{
   constructor(App){
-    this.login = ()=>login(showConnect,App.userSession);
+    this.login = ()=>{
+      login(showConnect,App.config)
+      return isPendingLogin(App.userSession)?App.userSession.handlePendingSignIn():new Promise((res,rej)=>{res(false)})
+    };
     this.isLogin = ()=>isLogin(App.userSession);
     this.exitAuth = ()=>unLognin(App.userSession);
     this.App = App;

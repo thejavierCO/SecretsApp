@@ -2,8 +2,7 @@ import {Person} from "@stacks/profile";
 
 export function getUserData(userSession){
     try{
-        let {loadUserData} = userSession;
-        return loadUserData();
+        return userSession.loadUserData();
     }catch(err){
         throw {error:"not login",more:err}
     }
@@ -11,8 +10,7 @@ export function getUserData(userSession){
 
 export function getPerson(userSession){
     try{
-        let {profile} = getUserData(userSession);
-        return new Person(profile);
+        return new Person(getUserData(userSession).profile);
     }catch(err){
         throw {error:"not login",more:err}
     }
@@ -21,5 +19,6 @@ export function getPerson(userSession){
 export function login(showConnect,configApp){showConnect(configApp)}
 
 export function isLogin(userSession){return userSession.isUserSignedIn()}
+export function isPendingLogin(userSession){return userSession.isSignInPending()}
 
 export function unLognin(userSession){return userSession.signUserOut()}
