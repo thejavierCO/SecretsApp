@@ -22,7 +22,7 @@ export class File{
         if(typeof data === "string"){
             return this.storage.putFile(this.name,data,{contentType:this.type});
         }else{
-            throw {error:"data not is string"}
+            throw {error:"data not is string",data}
         }
     }
     delete(){

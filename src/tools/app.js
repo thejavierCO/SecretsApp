@@ -73,21 +73,18 @@ export class App{
     this.Appconfig = new AppConfig(Service.permicions);
     this.userSession = new UserSession(this.AppConfig);
     Service.apps.push(this);
-    this._Auth = Auth;
+    this._Auth = new Auth(this);
   }
   useAuthClass(ClassAuth){
-    if(ClassAuth instanceof Auth){
-      this.Auth = ClassAuth;
-    }else{
-      throw {error:"not is instance of auth"}
-    }
+    this.Auth = ClassAuth;
   }
   get Auth(){
-    return new this._Auth(this);
+    return this._Auth;
   }
   set Auth(ClassAuth){
-    if(ClassAuth instanceof Auth){
-      this._Auth = ClassAuth;
+    let test = new ClassAuth(this);
+    if(test instanceof Auth){
+      this._Auth = test;
     }else{
       throw {error:"not is instance of auth"}
     }
