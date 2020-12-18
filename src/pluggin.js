@@ -1,27 +1,67 @@
-import driver from "./driver.svelte";
+export class inyect{
+    constructor(svelteComponent,data,vue){
+        this.vue = vue;
+        this.comp = new svelteComponent({...data})
+    }
+}
 
 export default class MyPluggin{
     constructor(){
-        this.keys = [];
-        this.comp = [];
+        this.id = 0;
+        this.component = [];
+        this.mounted = [];
     }
     install(Vue,options){
-        let id = 0;
-        Vue.component('svelte-component',{
-            name:"svelteComponent",
-            render:h=>h("div",{ref:"renderTag"}),
+        Vue.component('svelte', {
+            render:h=>h("span",{ref:"svelte-render-tag",class:"Svelte"+this.id}),
             data:(a)=>{
-                this.keys[a._uid] = new driver({props:{vue:a}});
-                this.comp[a._uid] = a;
-                id++;
-                return {};
+                if(a.$attrs.hasOwnProperty("component")){
+                    if(typeof a.$attrs.component === "string"){
+                        if(a.$parent.hasOwnProperty("Svelte")){
+                            if(a.$parent.Svelte.hasOwnProperty(a.$attrs.component)){
+                                this.component[a._uid] = {
+                                    component:a.$parent.Svelte[a.$attrs.component],
+                                    name:a.$attrs.component,
+                                    tag:a.$refs,
+                                    vue:a
+                                };
+                            }else{
+                                throw {error:"not exist component in parent svelte"}
+                            }
+                        }else{
+                            console.warn({warn:"require Svelte in parent element"});
+                        }
+                    }else{
+                        this.component[a._uid] = {
+                            component:a.$attrs.component,
+                            tag:a.$refs,
+                            vue:a
+                        };
+                    }
+                }
+                this.id++;
+                return {}
             },
             mounted:()=>{
-                let driver = this.keys[id+1];
-                driver.$$.on_mount.map(e=>e(this.comp[id+1]))
-                id--;
-            },
-            destroy:()=>{console.log("destroy",this)},
+                if(this.hasOwnProperty("component")){
+                    if(typeof this.component[this.id+1].component === "string"){
+                        let {component,name,tag,vue} = this.component[this.id+1]
+                        this.comp = this.mounted.push({[name]:new inyect(
+                            component,
+                            {target:tag["svelte-render-tag"],props:{...vue.$attrs}},
+                            vue
+                        )})
+                    }else{
+                        let {component,vue,tag} = this.component[this.id+1];
+                        this.comp = this.mounted.push(new inyect(
+                            component,
+                            {target:tag["svelte-render-tag"],props:{...vue.$attrs}},
+                            vue
+                        ))
+                    }
+                }
+                this.id--;
+            }
         })
     }
 }
