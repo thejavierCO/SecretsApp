@@ -1,5 +1,6 @@
 <script>
-    export let click;
-    console.log(click)
+    export let text;
+    import {createEventDispatcher} from "svelte"
+    let events = new createEventDispatcher();
 </script>
-<button>click</button>
+<button on:click={()=>events("click",{})}>{text}</button>

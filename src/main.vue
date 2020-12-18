@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <svelte component="main" v-on:click="click"></svelte>
-        <svelte :component="Svelte.init"></svelte>
+    <div v-if="state">
+        <svelte component="main" v-on:click="click(state=!state)" text="start"></svelte>
+    </div>
+    <div v-else>
+        <svelte component="main" v-on:click="click(state=!state)" text="end"></svelte>
     </div>
 </template>
 
@@ -12,16 +14,12 @@ export default {
     name:"TestsComponent",
     data:()=>{
         return {
-            Svelte:{
-                main,
-                init
-            }
+            Svelte:{main},
+            state:false
         }
     },
     methods:{
-        click:(a)=>{
-            console.log(a)
-        }
+        click:(a)=>{console.log(a)}
     }
 }
 </script>

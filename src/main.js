@@ -1,6 +1,6 @@
 import Vue from "vue";
 import main from "./main.vue"
-import MyPluggin from "./pluggin";
+import MyPluggin from "./pluging";
 
 Vue.use(new MyPluggin(),{static:false});
 
