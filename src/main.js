@@ -5,10 +5,13 @@ import Vue from "vue";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import {Service} from "./tools/app";
 import main from "./components/main.svelte"
+import myplug from "./pluging" 
 const config = new Service();
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+Vue.use(new myplug);
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
 config.setPermisions('store_write', 'publish_data');
 
 const app = config.makeApp("SecretsApp","https://cldup.com/JBYtQaqOZX.svg");

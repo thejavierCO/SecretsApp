@@ -20,26 +20,54 @@
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
-        <SvelteRenderData :auth="auth" :status="status"/>
+        <svelte component="Files" :auth="auth"/>
+        <div class="row">
+            <div class="col">
+                <div v-if="status===true">
+                    <b-card>
+                        <b-card-header>
+                            <form action="#" id="from-send-2fa" v-on:submit="send">
+                                <input type="text" name="auth" id="code">
+                                <input type="submit" value="send">
+                            </form>
+                            <form action="#" id="from-send-2fa-validate" v-on:submit="send">
+                                <input type="text" name="auth" id="code">
+                                <input type="submit" value="send">
+                            </form>
+                        </b-card-header>
+                        <b-button href="#" variant="primary">Go somewhere</b-button>
+                    </b-card>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
-import toVue from "svelte-adapter/vue"
 import Files from "../FilesRender.svelte";
 export default {
     name:"main_content",
-    components:{
-        SvelteRenderData:toVue(Files)
-    },
     data:(a)=>{
         return ({
             ...a.$parent.$data,
-            status:a.$parent.$data.auth.isLogin()
+            status:a.$parent.$data.auth.isLogin(),
+            Svelte:{
+                Files
+            }
         })
     },
     methods:{
         open:(a,b)=>{b()},
-        exit:(a,b)=>{b()}
+        exit:(a,b)=>{b()},
+        send:(a)=>{
+            let {target} = a;
+            let code = target.querySelector("#code");
+            a.preventDefault();
+        },
+        validate:(a)=>{
+            let {target} = a;
+            let code = target.querySelector("#code");
+            a.preventDefault();
+        }
     }
 }
 </script>

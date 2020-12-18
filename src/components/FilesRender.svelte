@@ -1,14 +1,19 @@
 <script>
+    import {onMount} from "svelte";
+    import Vue from "vue"
+    import Print from "./vue/printData.vue";
     export let auth;
     export let status;
+    onMount(()=>{
+        auth.Storage.Files((a)=>{
+            console.log(Print,Vue,a)
+            return true;
+        })
+    })
 </script>
 
-{#if status===true}
-    {#await auth.Storage.Files((a)=>{console.log(a);return true})}
-        loading
-    {:then exit} 
-        {console.log(exit)}
-    {/await}
+{#if status!==true}
+    <div showData></div>
 {:else}
-    none
+    <div showData>not login</div>
 {/if}
