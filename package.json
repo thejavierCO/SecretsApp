@@ -24,6 +24,7 @@
     "marked": "^1.1.1",
     "moment": "^2.29.1",
     "node-2fa": "^1.1.2",
+    "speakeasy": "^2.0.0",
     "svelte": "^3.25.1",
     "svelte-adapter": "^0.4.0",
     "uuid": "^8.3.2",
