@@ -1,5 +1,5 @@
 import {encryptContent,decryptContent} from "@stacks/encryption";
-import {showBlockstackConnect,showConnect,AppConfig, UserSession} from "@stacks/connect";
+import {showConnect,AppConfig, UserSession} from "@stacks/connect";
 import {Person} from "@stacks/profile";
 import {Storage} from "@stacks/storage";
 import { v4 } from "uuid";
