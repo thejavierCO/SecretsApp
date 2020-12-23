@@ -3,7 +3,6 @@ import {AuthConfig,Auth} from "./auth";
 
 export class App{
     constructor(name,icon){
-        console.log(name,icon)
         this.name = name;
         this.icon = icon||window.location.origin+"/logo.svg";
         this.AuthConfig = new AuthConfig(this);
