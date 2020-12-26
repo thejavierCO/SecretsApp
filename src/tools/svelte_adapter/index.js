@@ -24,7 +24,7 @@ export class middle extends Bridge{
 
 export class Render{
     constructor(options){
-        this.run = new middle({props:{...options}});
+        this.run = new middle({props:{...options}})
     }
     $on(name,callback){
         this.run.$on(name,callback);

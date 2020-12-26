@@ -1,21 +1,10 @@
 import "./css/style.scss";
-import {Render} from "./tools/svelte_adapter"
-import Main from "./components/main.svelte";
+import Vue from "vue";
+import main from "./components/vue/main.vue";
+import SvelteAdapter from "./tools/vue_plugin";
 
-let testD = document.createElement("div");
-let span = document.createElement("span")
-span.innerHTML = "<h1>init</h1>"
-testD.appendChild(span)
+Vue.use(new SvelteAdapter())
 
-let render = new Render({
-    target:Main,
-    props:{},
-    anchor:[testD]
-})
+let test = new Vue({render:h=>h(main)})
 
-
-render.$on("mount",(a)=>{
-    console.log(a)
-})
-
-render.mount("#app")
+test.$mount("#app")

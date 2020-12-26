@@ -1,7 +1,7 @@
 <script>
     import {onMount,createEventDispatcher} from "svelte"
     let test = new createEventDispatcher();
-    import Test from "./test.svelte"
+    import Test from "./test.svelte";
     export let run = "print";
     test("mount",{redner:"jaiosdij"})
 </script>
