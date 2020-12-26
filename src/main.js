@@ -1,27 +1,21 @@
 import "./css/style.scss";
+import {Render} from "./tools/svelte_adapter"
 import Main from "./components/main.svelte";
-let div = document.querySelector("#app");
-let nav = document.createElement("h1");
-nav.innerHTML = "init";
-class RenderSvelte extends Main{
-    mount(target,anchor=null,hydrate,intro){
-        if (target) {
-            if (hydrate) {
-                const nodes = children(target);
-                if(this.$$.fragment && this.$$.fragment.l)this.$$.fragment && this.$$.fragment.l(nodes);
-                nodes.forEach(detach);
-            } else {
-                if(this.$$.fragment && this.$$.fragment.c)this.$$.fragment.c();
-                this.$$.fragment.m(target,anchor);
-            }
-            if (intro) transition_in(this.$$.fragment);
-        }
-    }
-}
-let Render = new RenderSvelte({
-    props:{run:"init"}
-});
 
-Render.mount(div,nav)
+let testD = document.createElement("div");
+let span = document.createElement("span")
+span.innerHTML = "<h1>init</h1>"
+testD.appendChild(span)
 
-console.log(Render,[nav,div])
+let render = new Render({
+    target:Main,
+    props:{},
+    anchor:[testD]
+})
+
+
+render.$on("mount",(a)=>{
+    console.log(a)
+})
+
+render.mount("#app")
