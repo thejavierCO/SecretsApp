@@ -19,6 +19,8 @@
     "@stacks/storage": "^1.0.0-beta.20",
     "axios": "^0.20.0",
     "blockstack": "^21.1.1",
+    "bootstrap": "^4.5.3",
+    "faunadb": "^4.0.0",
     "marked": "^1.1.1",
     "svelte": "^3.25.1",
     "uuid": "^8.3.2",
