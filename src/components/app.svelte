@@ -1,24 +1,24 @@
 <script>
-    import db from "faunadb";
-    import Auth from "./auth.svelte"
+    import About from "./about.svelte";
+    import Service from "./service.svelte";
+    import Auth from "./auth.svelte";
     export let App;
-    let user = db.Client({secret:"fnAD-X6hC2ACBtYaFWQ9IDtmu5Xb7pyUA9FfzPFk"})
-    let test = db.query;
-    let auth = App.Auth;
-    let status = auth.isSignIn;
-    let accion = ()=>{
-        status = auth.isSignIn;
-        if(!auth.isSignIn)return auth.login();
-        else return auth.exit();
-    };
-
-    console.log(user,test);
+    let {Auth:auth} = App;
+    let test = ()=>auth.isSignIn;
 </script>
 
-<button on:click={accion}>
-    {#if !status}login{:else}exit{/if}
-</button>
-
-{#if status}
-    <Auth user={auth.Profile().toJSON()} />
-{/if}
+<Auth {auth}>
+    <div slot="btn" class="navbar" let:accion let:text>
+        <h3>{App.name}</h3>
+        <button on:click={accion} width="10px" height="10px" avatar><span>{text}</span></button>
+    </div>
+</Auth>
+<Auth {auth}>
+    <div slot="body">
+        {#if test()}
+            <Service {App}/>
+        {:else}
+            <About {App}/>
+        {/if}
+    </div>
+</Auth>
