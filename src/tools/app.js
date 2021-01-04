@@ -29,19 +29,19 @@ class AuthConfig{
             return this.userSession.handlePendingSignIn()
             .catch(err=>{throw err})
         }else if(this.isSignIn){
-            return new Promise((res,rej)=>res(this.userSession.loadUserData()))
+            return new Promise((res)=>res(this.userSession.loadUserData()))
+        }else{
+            return new Promise((res,rej)=>rej({error:"not processs"}))
         }
     }
 }
 
 
 export default class App{
-    constructor(name,icon,finished,redirectTo){
-        this.name = name;
-        this.icon = icon;
-        this.appConfig = new AppConfig(['store_write','publish_data']);
-        if(typeof finished === "function")this.finished = finished;
-        if(typeof redirectTo === "string")this.redirectTo = redirectTo;
+    constructor(name,icon,permisos=['store_write','publish_data']){
+        this.name =     name;
+        this.icon =     icon;
+        this.appConfig =new AppConfig(permisos);
     }
     get Auth(){
         return new Auth(this);
@@ -51,9 +51,9 @@ export default class App{
 export class Auth extends AuthConfig{
     constructor(App){
         super(App);
-        this.login = ()=>!this.isSignIn?showConnect(this):false;
-        this.exit = ()=>this.isSignIn?this.userSession.signUserOut():false;
-        this.Profile = ()=>new Profile(this.userSession.loadUserData().profile)
+        this.login =    ()=>!this.isSignIn?showConnect(this):false;
+        this.exit =     ()=>this.isSignIn?this.userSession.signUserOut():false;
+        this.Profile =  ()=>new Profile(this.user.profile)
     }
     get user(){
         return this.userSession.loadUserData()
